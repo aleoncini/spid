@@ -1,24 +1,24 @@
 # spid
 A SAML2 IDP Service to test a SPID authentication environment
 
-== Packaging your application
+## Packaging your application
 
 You can simply package and run your IDP in the same way you develop, package and run a Thorntail service.
 Just run `mvn clean package`. An `idp-thorntail.jar` file will be built in your target folder.
 
-=== Package a container
+### Package a container
 Run `mvn clean package docker:build`. An `example-docker-jaxrs-dockerfile` docker image will be built.
 
 This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
 
 
-== Running Docker with a Thorntail microservice inside
+## Running Docker with a Thorntail microservice inside
 
 You run the Docker container and start the Thorntail microservice (a simple JAX-RS application) with the following commands:
 
 `docker run -p 8080:8080 example-docker-jaxrs-dockerfile`
 
-== Inspect your running Docker containers
+## Inspect your running Docker containers
 
 From a terminal run `docker ps` and you should see something like:
 
@@ -33,7 +33,7 @@ Result should be the following:
 
     bar
 
-== Special notes if you are using DockerMachine/Docker Toolbox:
+## Special notes if you are using DockerMachine/Docker Toolbox:
 
 Your `curl`
 command should look like
