@@ -96,11 +96,28 @@
       <groupId>io.thorntail</groupId>
       <artifactId>undertow</artifactId>
     </dependency>
+    <!-- keycloack API dependencies -->
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-core</artifactId>
       <version>4.8.3.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-adapter-core</artifactId>
+      <version>4.8.3.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-saml-core</artifactId>
+      <version>4.8.3.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-saml-adapter-api-public</artifactId>
+      <version>4.8.3.Final</version>
+    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
