@@ -4,10 +4,29 @@ A SAML2 IDP Service to test a SPID authentication environment
 ## Packaging your application
 
 You can simply package and run your IDP in the same way you develop, package and run a Thorntail service.
-Just run `mvn clean package`. An `idp-thorntail.jar` file will be built in your target folder.
+Just run
+
+`> mvn clean package`
+ 
+ An `idp-thorntail.jar` file will be built in your target folder.
+
+To test that everything is working execute the application with 
+
+`> java -jar target/idp-thorntail.jar`
+
+and from another shell connect to a test ReST API called ping with curl.
+
+`> curl -k https://localhost:8443/ping`
+
+if the service is correctly working you should receive an answer like `{"ping":"pong"}`
 
 ### Package a container
-Run `mvn clean package docker:build`. An `example-docker-jaxrs-dockerfile` docker image will be built.
+The same service can be packaged as a docker image (for further deployment in PaaS environment like OpenShift)
+
+In this case Run
+`> mvn clean package docker:build`
+
+An `example-docker-jaxrs-dockerfile` docker image will be built.
 
 This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
 
