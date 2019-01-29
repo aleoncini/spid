@@ -19,7 +19,7 @@
   <url>https://github.com/aleoncini/spid</url>
 
   <properties>
-      <version.thorntail>2.2.1.Final</version.thorntail>
+      <version.thorntail>2.3.0.Final</version.thorntail>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
       <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -37,59 +37,37 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>cdi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.21</version>
-    </dependency>
-  </dependencies>
-
   <build>
     <finalName>idp</finalName>
     <plugins>
       <plugin>
         <groupId>io.thorntail</groupId>
         <artifactId>thorntail-maven-plugin</artifactId>
+        <version>${version.thorntail}</version>
+
         <executions>
           <execution>
-            <id>package</id>
-          </execution>
-          <execution>
-            <id>start</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>stop</id>
-            <phase>none</phase>
+            <goals>
+              <goal>package</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>0.4.13</version>
-        <configuration>
-          <imageName>${project.build.finalName}</imageName>
-          <dockerDirectory>docker</dockerDirectory>
-          <resources>
-             <resource>
-               <targetPath>/</targetPath>
-               <directory>${project.build.directory}</directory>
-               <include>${project.build.finalName}-thorntail.jar</include>
-             </resource>
-          </resources>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>io.thorntail</groupId>
+      <artifactId>jaxrs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.21</version>
+    </dependency>
+
+  </dependencies>
 
 </project>
