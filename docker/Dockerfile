@@ -1,6 +1,8 @@
 FROM openjdk:jre-alpine
 
 ADD idp-thorntail.jar /opt/thorntail.jar
+ADD keystore.jks /opt/keystore.jks
 
-EXPOSE 8080
+WORKDIR "/opt"
+EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "/opt/thorntail.jar"]

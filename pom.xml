@@ -44,7 +44,12 @@
         <groupId>io.thorntail</groupId>
         <artifactId>thorntail-maven-plugin</artifactId>
         <version>${version.thorntail}</version>
-
+        <configuration>
+          <properties>
+            <swarm.bind.address>0.0.0.0</swarm.bind.address>
+            <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+          </properties>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -58,13 +63,18 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>0.4.13</version>
         <configuration>
-          <imageName>${project.build.finalName}</imageName>
+          <imageName>idp-test-suite</imageName>
           <dockerDirectory>docker</dockerDirectory>
           <resources>
             <resource>
               <targetPath>/</targetPath>
               <directory>${project.build.directory}</directory>
               <include>${project.build.finalName}-thorntail.jar</include>
+            </resource>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.basedir}</directory>
+              <include>keystore.jks</include>
             </resource>
           </resources>
         </configuration>

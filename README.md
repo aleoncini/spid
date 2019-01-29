@@ -18,7 +18,7 @@ and from another shell connect to a test ReST API called ping with curl.
 
 `> curl -k https://localhost:8443/ping`
 
-if the service is correctly working you should receive an answer like `{"ping":"pong"}`
+If everything is properly configured you should get a JSON payload like `{"ping":"pong"}`
 
 ### Package a container
 The same service can be packaged as a docker image (for further deployment in PaaS environment like OpenShift)
@@ -26,35 +26,28 @@ The same service can be packaged as a docker image (for further deployment in Pa
 In this case Run
 `> mvn clean package docker:build`
 
-An `example-docker-jaxrs-dockerfile` docker image will be built.
+An `idp-test-suite` docker image will be built.
+check it running:
 
-This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
+`> docker images`
 
+you should see an output like this:
+
+`REPOSITORY                                                  TAG                 IMAGE ID            CREATED             SIZE
+ idp-test-suite                                              latest              bc79d1b1a1cc        2 minutes ago       152MB
+ <none>                                                      <none>              95024076bb4e        35 minutes ago      152MB
+  ...                                                         ...                    ...             .. minutes ago       ... `
 
 ## Running Docker with a Thorntail microservice inside
 
-You run the Docker container and start the Thorntail microservice (a simple JAX-RS application) with the following commands:
+Now you can run the container (and start the Thorntail microservice) using the following command:
 
-`docker run -p 8080:8080 example-docker-jaxrs-dockerfile`
+`> docker run -p 8443:8443 -d idp-test-suite`
 
-## Inspect your running Docker containers
+as well as for local packaging you can test that the service is running using the same curl command:
 
-From a terminal run `docker ps` and you should see something like:
+`> curl -k https://localhost:8443/ping`
 
-    CONTAINER ID        IMAGE                                     COMMAND                  CREATED             STATUS              PORTS                    NAMES
-    a840d7990c15        example-docker-jaxrs-dockerfile           "/bin/sh -c 'java -ja"   43 seconds ago      Up 42 seconds       0.0.0.0:8080->8080/tcp   admiring_brattain
+and you should receive the same response.
 
-Now try to `curl` the resource running inside Docker:
-
-    curl localhost:8080/resource
-
-Result should be the following:
-
-    bar
-
-## Special notes if you are using DockerMachine/Docker Toolbox:
-
-Your `curl`
-command should look like
-
-    curl $(docker-machine ip default):8080/resource
+This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
