@@ -3,7 +3,11 @@ package it.redhat.spid.common;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +17,36 @@ import java.util.zip.InflaterInputStream;
 
 public class Util {
     private static final Logger logger = LoggerFactory.getLogger("it.redhat.spid");
+
+    public static Document newEmptyDocument() {
+        DocumentBuilderFactory factory = null;
+        DocumentBuilder builder = null;
+        Document ret;
+
+        try {
+            factory = DocumentBuilderFactory.newInstance();
+            builder = factory.newDocumentBuilder();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ret = builder.newDocument();
+
+        return ret;
+    }
+
+    public Node getAuthnRequestNode(String authNRequest){
+        Node root = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+            Document document = documentBuilder.parse(new ByteArrayInputStream(authNRequest.getBytes("UTF-8")));
+            root = document.getElementsByTagName("samlp:AuthnRequest").item(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return root;
+    }
 
     /** (Based on the Google reference implementation, with some modifications suggested in the Google Api's group
      *  -Nate- to avoid buffer size problems in the original code)
@@ -25,22 +59,27 @@ public class Util {
      * @return the string format of the authentication request XML.
      *
      */
-    public String decodeAuthnRequestXML(String encodedRequestXmlString) throws Exception {
+    public String decodeAuthnRequestXML(String encodedRequestXmlString){
         String uncompressed = null;
         // URL decode
         // No need to URL decode: auto decoded by request.getParameter() method
         // Base64 decode
-        Base64 base64Decoder = new Base64();
-        byte[] xmlBytes = encodedRequestXmlString.getBytes("UTF-8");
-        byte[] base64DecodedByteArray = base64Decoder.decode(xmlBytes);
+        try {
+            Base64 base64Decoder = new Base64();
+            byte[] xmlBytes = encodedRequestXmlString.getBytes("UTF-8");
+            byte[] base64DecodedByteArray = base64Decoder.decode(xmlBytes);
+            try {
+                uncompressed = new String(inflate(base64DecodedByteArray, true));
+            } catch (Exception e) {
+                uncompressed = new String(inflate(base64DecodedByteArray, false));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
         // Uncompress the AuthnRequest data using a stream decompressor, as suggested in discussions
         // of the Google Apps Api's group.
-        try {
-            uncompressed = new String(inflate(base64DecodedByteArray, true));
-        } catch (Exception e) {
-            uncompressed = new String(inflate(base64DecodedByteArray, false));
-        }
         return uncompressed;
     }
 

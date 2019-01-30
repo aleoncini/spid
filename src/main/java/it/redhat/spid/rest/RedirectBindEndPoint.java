@@ -9,14 +9,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.stream.Collectors;
 
-@Path("saml")
+@Path("test")
 public class RedirectBindEndPoint {
 
     private static final Logger logger = LoggerFactory.getLogger("it.redhat.spid");
@@ -64,10 +58,4 @@ public class RedirectBindEndPoint {
         return Response.ok("{\"success\":\"true\",\"result\":\"OK\"}").build();
     }
 
-    public String convert(InputStream inputStream, Charset charset) throws IOException {
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
-            return br.lines().collect(Collectors.joining(System.lineSeparator()));
-        }
-    }
 }
