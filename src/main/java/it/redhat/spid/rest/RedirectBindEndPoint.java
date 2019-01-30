@@ -1,17 +1,20 @@
 package it.redhat.spid.rest;
 
-import org.keycloak.adapters.saml.SamlPrincipal;
-import org.keycloak.saml.processing.core.saml.v2.util.AssertionUtil;
+import it.redhat.spid.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.stream.Collectors;
 
 @Path("saml")
 public class RedirectBindEndPoint {
@@ -19,37 +22,52 @@ public class RedirectBindEndPoint {
     private static final Logger logger = LoggerFactory.getLogger("it.redhat.spid");
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doGet() {
+        logger.info("=================> HTTP-Redirect binding");
+        return Response.status(200).entity("{\"binding\":\"HTTP-Redirect\"}\n" ).build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPost() {
+        logger.info("=================> HTTP-POST binding");
+        return Response.status(200).entity("{\"binding\":\"HTTP-POST\"}\n" ).build();
+    }
+
+    @GET
     @Path("trace")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response doGet(@Context HttpServletRequest request) {
-        logger.info("===================> SAML HTTP-Redirect Binding");
-        if (request == null){
-            return Response.ok("{\"success\":\"FALSE\",\"result\":\"Unable to get request object.\"}").build();
+    public Response doGet(@QueryParam("SAMLRequest") String deflatedEncodedSamlAuthnRequest) {
+        logger.info("=================> SAML HTTP-Redirect Binding");
+        if (deflatedEncodedSamlAuthnRequest == null){
+            return Response.ok("{\"success\":\"FALSE\",\"result\":\"Unable to get saml authn request object.\"}").build();
         }
-        String token = getAssertion(request);
-        if (token == null){
-            return Response.ok("{\"success\":\"FALSE\",\"result\":\"Keycloak IDToken not available.\"}").build();
+        try {
+            String authNRequest = new Util().decodeAuthnRequestXML(deflatedEncodedSamlAuthnRequest);
+            logger.info("=================> DEFLATED and ENCODED SAML Token <============");
+            logger.info(authNRequest );
+            logger.info("=================> ENCODED SAML Token <=========================");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.ok("{\"success\":\"FALSE\",\"result\":\"Unable to decode saml request\"}").build();
         }
         return Response.ok("{\"success\":\"true\",\"result\":\"OK\"}").build();
     }
 
-    private String getAssertion(HttpServletRequest request) {
-
-        if (! (request.getUserPrincipal() instanceof SamlPrincipal)) {
-            logger.info("=================> Error Principal not instance of SamlPrincipal");
-        }
-        SamlPrincipal principal = (SamlPrincipal) request.getUserPrincipal();
-        String token = null;
-        try {
-            token = AssertionUtil.asString(principal.getAssertion());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        logger.info("=================> SAML Token <=================================");
-        logger.info(token);
-        logger.info("=================> END of SAML Token <==========================");
-
-        return token;
+    @GET
+    @Path("logout")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doLogOut(@Context HttpServletRequest request) {
+        logger.info("===================> SAML Logout");
+        // Do nothing
+        return Response.ok("{\"success\":\"true\",\"result\":\"OK\"}").build();
     }
 
+    public String convert(InputStream inputStream, Charset charset) throws IOException {
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
+    }
 }
