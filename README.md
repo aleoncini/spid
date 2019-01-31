@@ -1,7 +1,7 @@
 # spid
 A SAML2 IDP Service to test a SPID authentication environment
 
-## Packaging your application
+## Running as standalone
 
 You can simply package and run your IDP in the same way you develop, package and run a Thorntail service.
 Just run
@@ -20,8 +20,11 @@ and from another shell connect to a test ReST API called ping with curl.
 
 If everything is properly configured you should get a JSON payload like `{"ping":"pong"}`
 
-### Package a container
+## Running in a container
+
 The same service can be packaged as a docker image (for further deployment in PaaS environment like OpenShift)
+
+#### Packaging the container
 
 In this case Run
 `> mvn clean package docker:build`
@@ -38,7 +41,7 @@ you should see an output like this:
  <none>                                                      <none>              95024076bb4e        35 minutes ago      152MB
   ...                                                         ...                    ...             .. minutes ago       ... `
 
-## Running Docker with a Thorntail microservice inside
+#### Running the container with a Thorntail microservice inside
 
 Now you can run the container (and start the Thorntail microservice) using the following command:
 
@@ -51,3 +54,6 @@ as well as for local packaging you can test that the service is running using th
 and you should receive the same response.
 
 This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
+
+## Deploy into OpenShift
+
