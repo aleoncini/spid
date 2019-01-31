@@ -11,31 +11,143 @@ public class AuthNRequest {
     private Node root = new Util().newEmptyDocument();
 
     public String getID(){
-        return  ((Element)root).getAttribute("ID");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("ID");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public String getVersion(){
-        return  ((Element)root).getAttribute("Version");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("Version");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public String getIssueIstant(){
-        return  ((Element)root).getAttribute("IssueInstant");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("IssueInstant");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public String getDestination(){
-        return  ((Element)root).getAttribute("Destination");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("Destination");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public String getForceAuthn(){
-        return  ((Element)root).getAttribute("ForceAuthn");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("ForceAuthn");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
-    public String getAssertionConsumerServiceIndex(){
-        return  ((Element)root).getAttribute("AssertionConsumerServiceIndex");
+    public String getAssertionConsumerServiceURL(){
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("AssertionConsumerServiceURL");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getProtocolBinding(){
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("ProtocolBinding");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public String getIsPassive(){
-        return  ((Element)root).getAttribute("IsPassive");
+        String ret = "";
+        try {
+            ret = ((Element)root).getAttribute("IsPassive");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getIssuer(){
+        String ret = "";
+        try {
+            ret = ((Element)root).getElementsByTagName("saml:Issuer").item(0).getTextContent();
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getIssuerFormat(){
+        String ret = "";
+        try {
+            ret = ((Element)((Element)root).getElementsByTagName("saml:Issuer").item(0)).getAttribute("Format");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getIssuerNameQualifier(){
+        String ret = "";
+        try {
+            ret = ((Element)((Element)root).getElementsByTagName("saml:Issuer").item(0)).getAttribute("NameQualifier");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getNameIDPolicyFormat(){
+        String ret = "";
+        try {
+            ret = ((Element)((Element)root).getElementsByTagName("samlp:NameIDPolicy").item(0)).getAttribute("Format");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getRequestedAuthnContextComparison(){
+        String ret = "";
+        try {
+            ret = ((Element)((Element)root).getElementsByTagName("samlp:RequestedAuthnContext").item(0)).getAttribute("Comparison");
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
+    public String getAuthnContextClassRef(){
+        String ret = "";
+        try {
+            ((Element)((Element)root).getElementsByTagName("samlp:RequestedAuthnContext").item(0)).getElementsByTagName("saml:AuthnContextClassRef").item(0).getTextContent();
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
     }
 
     public AuthNRequest build(String encodedDeflatedSamlRequest){
@@ -56,8 +168,15 @@ public class AuthNRequest {
         buffer.append("          issue istant: ").append(this.getIssueIstant()).append("\n");
         buffer.append("           destination: ").append(this.getDestination()).append("\n");
         buffer.append("           force authn: ").append(this.getForceAuthn()).append("\n");
-        buffer.append("  consumer service ndx: ").append(this.getAssertionConsumerServiceIndex()).append("\n");
+        buffer.append("  consumer service url: ").append(this.getAssertionConsumerServiceURL()).append("\n");
+        buffer.append("consumer protocol bind: ").append(this.getProtocolBinding()).append("\n");
         buffer.append("            is passive: ").append(this.getIsPassive()).append("\n");
+        buffer.append("                Issuer: ").append(this.getIssuer()).append("\n");
+        buffer.append("         Issuer format: ").append(this.getIssuerFormat()).append("\n");
+        buffer.append("           Issuer name: ").append(this.getIssuerNameQualifier()).append("\n");
+        buffer.append(" Name id policy format: ").append(this.getNameIDPolicyFormat()).append("\n");
+        buffer.append("      Authn comparison: ").append(this.getRequestedAuthnContextComparison()).append("\n");
+        buffer.append("       Authn class ref: ").append(this.getAuthnContextClassRef()).append("\n");
         return buffer.toString();
     }
 
