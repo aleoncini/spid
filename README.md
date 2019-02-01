@@ -57,15 +57,17 @@ This example is using Spotifys docker-maven-plugin: https://github.com/spotify/d
 
 ## Deploy into OpenShift
 Let's do it very simple with a complete container platform for your development!
-If you don't have an openshift enterprise cluster, just begin with minishift on your workstation: 
-  - download the "minishift" executable
-  - run "minishift start"
+If you don't have an openshift enterprise cluster, just begin with `minishift` on your workstation: 
+  - download the `minishift` executable
+  - run `minishift start`
 
 After that you will be able to run this IDP and all your component on a consistent and portable environment
 
 ref. to the guide: https://docs.okd.io/latest/minishift/index.html
 
 #### Create and expose the app using the image centos/wildfly
+
+From command line
 
 ```
 oc new-app --image-stream=wildfly --name=spid-test https://github.com/aleoncini/spid.git &&\
@@ -76,4 +78,7 @@ That's it! now make the ping test
 
 `> curl -k http://$(oc get route | grep spid-test | awk '{ print $2}')/idp/ping`
 
+Or... if you like, you can gain the same result by using the OpenShift GUI
+
+![alt text](img/catalog.png)
 
