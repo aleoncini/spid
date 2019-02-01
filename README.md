@@ -88,7 +88,7 @@ In the overlayered wizard, just click on `next`
 
 ![alt text](img/wizard1.png)
 
-Then, choose the `base-image` (`wildfly 13` is the latest at the moment of this writing), type the name of your targhet app, insert this spid repo url
+Then, choose the `base-image` (`wildfly 13` is the latest at the moment of this writing), type the name of your target app, insert this spid repo url
 
 ![alt text](img/wizard2.png)
 
