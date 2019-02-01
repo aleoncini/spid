@@ -80,5 +80,27 @@ That's it! now make the ping test
 
 Or... if you like, you can gain the same result by using the OpenShift GUI
 
+Select the catalog on the left bar, than choose the `Wildfly` image
+
 ![alt text](img/catalog.png)
+
+In the overlayered wizard, just click on `next`
+
+![alt text](img/wizard1.png)
+
+Then, choose the `base-image` (`wildfly 13` is the latest at the moment of this writing), type the name of your targhet app, insert this spid repo url
+
+![alt text](img/wizard2.png)
+
+Then, close the wizard
+
+![alt text](img/wizard3.png)
+
+Just in few minutes, OpenShift will compile the code and will inject it into the base-image container
+
+![alt text](img/build.png)
+
+Then, the new container will be deployed and will be reachable via the URL that is on upper rigth side of the page
+
+![alt text](img/deployment.png)
 
