@@ -73,5 +73,7 @@ oc expose service spid-test
 ```
 
 That's it! now make the ping test
+
 `> curl -k http://$(oc get route | grep spid-test | awk '{ print $2}')/idp/ping`
+
 
