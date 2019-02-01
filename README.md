@@ -56,4 +56,51 @@ and you should receive the same response.
 This example is using Spotifys docker-maven-plugin: https://github.com/spotify/docker-maven-plugin/
 
 ## Deploy into OpenShift
+Let's do it very simple with a complete container platform for your development!
+If you don't have an openshift enterprise cluster, just begin with `minishift` on your workstation: 
+  - download the `minishift` executable
+  - run `minishift start`
+
+After that you will be able to run this IDP and all your component on a consistent and portable environment
+
+ref. to the guide: https://docs.okd.io/latest/minishift/index.html
+
+#### Create and expose the app using the image centos/wildfly
+
+From command line
+
+```
+oc new-app --image-stream=wildfly --name=spid-test https://github.com/aleoncini/spid.git &&\
+oc expose service spid-test
+```
+
+That's it! now make the ping test
+
+`> curl -k http://$(oc get route | grep spid-test | awk '{ print $2}')/idp/ping`
+
+Or... if you like, you can gain the same result by using the OpenShift GUI
+
+Select the catalog on the left bar, than choose the `Wildfly` image
+
+![alt text](img/catalog.png)
+
+In the overlayered wizard, just click on `next`
+
+![alt text](img/wizard1.png)
+
+Then, choose the `base-image` (`wildfly 13` is the latest at the moment of this writing), type the name of your target app, insert this spid repo url
+
+![alt text](img/wizard2.png)
+
+Then, close the wizard
+
+![alt text](img/wizard3.png)
+
+Just in few minutes, OpenShift will compile the code and will inject it into the base-image container
+
+![alt text](img/build.png)
+
+Then, the new container will be deployed and will be reachable via the URL that is on upper rigth side of the page
+
+![alt text](img/deployment.png)
 
