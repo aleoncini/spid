@@ -68,6 +68,7 @@ ref. to the guide: https://docs.okd.io/latest/minishift/index.html
 #### Create and expose the app using the image centos/wildfly
 
 `> oc new-app --image-stream=wildfly --name=spid-test https://github.com/aleoncini/spid.git \`
+
 `  oc expose service spid-test`
 
 That's it! now make the ping test
