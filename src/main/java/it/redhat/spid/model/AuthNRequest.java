@@ -1,13 +1,13 @@
 package it.redhat.spid.model;
 
 import it.redhat.spid.common.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class AuthNRequest {
-    private static final Logger logger = LoggerFactory.getLogger("it.redhat.spid");
+    public final static String SPIDL1_CLASS = "https://www.spid.gov.it/SpidL1";
+    public final static String SPIDL2_CLASS = "https://www.spid.gov.it/SpidL2";
+    public final static String SPIDL3_CLASS = "https://www.spid.gov.it/SpidL3";
     private Node root = new Util().newEmptyDocument();
 
     public String getID(){
@@ -150,12 +150,21 @@ public class AuthNRequest {
         return ret;
     }
 
+    public String getSignature(){
+        String ret = "";
+        try {
+            ((Element)((Element)root).getElementsByTagName("ds:Signature").item(0)).getTextContent();
+        } catch (Exception e){
+            //do nothing, probably the element is not contained in the assertion
+        }
+        return ret;
+    }
+
     public AuthNRequest build(String encodedDeflatedSamlRequest){
         String authNRequest = new Util().decodeAuthnRequestXML(encodedDeflatedSamlRequest);
-        if (authNRequest == null){
-            return this;
+        if (authNRequest != null){
+            this.root = new Util().getAuthnRequestNode(authNRequest);
         }
-        this.root = new Util().getAuthnRequestNode(authNRequest);
         return this;
     }
 
