@@ -26,4 +26,14 @@ public class ServiceProvider {
         this.assertionConsumerService = assertionConsumerService;
         return this;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("{ ");
+        buffer.append("\"entityID\": \"").append(entityID).append("\",");
+        buffer.append("\"assertionConsumerService\": \"").append(assertionConsumerService).append("\"");
+        buffer.append(" }");
+        return  buffer.toString();
+    }
 }

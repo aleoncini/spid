@@ -10,6 +10,7 @@ public class AuthNRequestValidator {
     private AuthNRequest authNRequest = null;
     private int check_mode = DEFAULT_CHECK_MODE;
     private boolean isValid = true;
+    private String statusCode;
     private StringBuffer report;
     private IdentityProvider idp = new IdentityProvider();
     private ServiceProvider sp = new ServiceProvider();

@@ -1,6 +1,6 @@
 package it.redhat.spid.rest;
 
-import it.redhat.spid.common.IDPResponse;
+import it.redhat.spid.model.IDPResponse;
 import it.redhat.spid.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

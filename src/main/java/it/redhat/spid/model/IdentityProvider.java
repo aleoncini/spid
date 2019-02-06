@@ -15,4 +15,14 @@ public class IdentityProvider {
         this.entityID = entityID;
         return this;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("{ ");
+        buffer.append("\"entityID\": \"").append(entityID).append("\"");
+        buffer.append(" }");
+        return  buffer.toString();
+    }
+
 }
