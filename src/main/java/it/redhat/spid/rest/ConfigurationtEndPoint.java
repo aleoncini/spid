@@ -19,18 +19,42 @@ public class ConfigurationtEndPoint {
     private Configuration config;
 
     @GET
-    @Produces(MediaType.APPLICATION_XHTML_XML)
-    public Response doGet(@QueryParam("SAMLRequest") String deflatedEncodedSamlAuthnRequest) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doGet() {
         logger.info(config.toString());
         return Response.status(200).entity(config.toString()).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("sp")
+    public Response getServiceProvider() {
+        logger.info("\n" + config.getServiceProvider().toString());
+        return Response.status(200).entity(config.getServiceProvider().toString()).build();
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("load")
-    public Response doPost(@QueryParam("SAMLRequest") String deflatedEncodedSamlAuthnRequest) {
-        logger.info("=================> HTTP-POST binding");
-        return Response.status(200).entity("").build();
+    @Path("sp")
+    public Response updateServiceProvider(@QueryParam("entityID") String entityID) {
+        logger.info("=================> updateServiceProvider");
+        return Response.status(200).entity("{\"test\":\"test\"}\n").build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("idp")
+    public Response getIdentityProvider() {
+        logger.info("\n" + config.getIdentityProvider().toString());
+        return Response.status(200).entity(config.getIdentityProvider().toString()).build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("idp")
+    public Response updateIdentityProvider(@QueryParam("entityID") String entityID) {
+        logger.info("=================> updateIdentityProvider");
+        return Response.status(200).entity("{\"test\":\"test\"}\n").build();
     }
 
 }

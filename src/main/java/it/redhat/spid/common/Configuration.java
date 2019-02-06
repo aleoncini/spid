@@ -9,9 +9,12 @@ import javax.inject.Singleton;
 @Singleton
 @Named("config")
 public class Configuration {
+    public final static int STANDARD_CHECK_MODE = 0;
+    public final static int STRICT_CHECK_MODE = 1;
     private IdentityProvider identityProvider;
     private ServiceProvider serviceProvider;
     private String statusCode;
+    private int checkMode = STANDARD_CHECK_MODE;
 
     public Configuration(){
         this.identityProvider = new IdentityProvider().setEntityID("http://localhost:8080");
@@ -48,12 +51,22 @@ public class Configuration {
         return this;
     }
 
+    public int getCheckMode() {
+        return checkMode;
+    }
+
+    public Configuration setCheckMode(int mode) {
+        this.checkMode = mode;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("{ ");
-        buffer.append("\"statusCode\": \"").append(statusCode).append("\",");
-        buffer.append("\"serviceProvider\": ").append(serviceProvider).append(",");
+        buffer.append("\"statusCode\": \"").append(statusCode).append("\", ");
+        buffer.append("\"checkMode\": ").append(checkMode).append(", ");
+        buffer.append("\"serviceProvider\": ").append(serviceProvider).append(", ");
         buffer.append("\"identityProvider\": ").append(identityProvider);
         buffer.append(" }");
         return  buffer.toString();
