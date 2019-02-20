@@ -9,11 +9,14 @@ public class SamlResponse {
     private AuthNRequest authNRequest;
     private String uuid;
     private String issueIstant;
+    private String statusCode;
+    private String statusMessage;
 
     public SamlResponse(){
         this.uuid = UUID.randomUUID().toString();
         DateFormat UTCFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
         this.issueIstant = UTCFormat.format(new Date());
+        this.statusCode = "urn:oasis:names:tc:SAML:2.0:status:AuthnFailed";
     }
 
     public AuthNRequest getAuthNRequest() {
@@ -22,6 +25,24 @@ public class SamlResponse {
 
     public SamlResponse setAuthNRequest(AuthNRequest authNRequest) {
         this.authNRequest = authNRequest;
+        return this;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public SamlResponse setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+        return this;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public SamlResponse setStatusMessage(String msg) {
+        this.statusMessage = msg;
         return this;
     }
 
@@ -44,13 +65,15 @@ public class SamlResponse {
         buffer.append("    InResponseTo=\"").append(authNRequest.getID()).append("\"\n");
         buffer.append("    Destination=\"").append(authNRequest.getIssuer()).append("\">\n");
         buffer.append("  <samlp:Status>").append("\n");
-        buffer.append("").append("\n");
+        buffer.append("    <samlp:StatusCode Value=\"").append(statusCode).append("\"/>").append("\n");
+        if (statusMessage != null){
+            buffer.append("    <samlp:StatusMessage Value=\"").append(statusMessage).append("\"/>").append("\n");
+        }
         buffer.append("  </samlp:Status>").append("\n");
-        buffer.append("    <samlp:StatusCode Value=\"urn:oasis:names:tc:SAML:2.0:status:Success\" />").append("\n");
         buffer.append("  <saml:Issuer").append("\n");
-        buffer.append("      NameQualifier=\"").append("\n");
+        buffer.append("      Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:entity\">").append("\n");
         buffer.append("").append("\n");
-        buffer.append("").append("\n");
+        buffer.append("  </saml:Issuer>").append("\n");
         buffer.append("").append("\n");
         buffer.append("").append("\n");
         buffer.append("").append("\n");
